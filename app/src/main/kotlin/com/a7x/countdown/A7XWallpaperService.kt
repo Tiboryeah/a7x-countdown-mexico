@@ -17,19 +17,29 @@ class A7XWallpaperService : WallpaperService() {
         private var visible = false
 
         private val paintText = Paint().apply {
-            color = Color.BLACK
-            textSize = 200f
+            color = Color.parseColor("#1a1a1a")
+            textSize = 300f
             typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
+            textAlign = Paint.Align.CENTER
+            isAntiAlias = true
+            setShadowLayer(10f, 0f, 0f, Color.parseColor("#44000000"))
+        }
+
+        private val paintSubText = Paint().apply {
+            color = Color.parseColor("#2a2a2a")
+            textSize = 80f
+            typeface = Typeface.create(Typeface.SERIF, Typeface.NORMAL)
             textAlign = Paint.Align.CENTER
             isAntiAlias = true
         }
 
-        private val paintSubText = Paint().apply {
+        private val paintBand = Paint().apply {
             color = Color.BLACK
-            textSize = 60f
-            typeface = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL)
+            textSize = 50f
+            typeface = Typeface.create(Typeface.MONOSPACE, Typeface.BOLD)
             textAlign = Paint.Align.CENTER
             isAntiAlias = true
+            letterSpacing = 0.2f
         }
 
         override fun onVisibilityChanged(visible: Boolean) {
@@ -49,30 +59,44 @@ class A7XWallpaperService : WallpaperService() {
             try {
                 canvas = holder.lockCanvas()
                 if (canvas != null) {
-                    // 1. Draw Background Parchment Color
-                    canvas.drawColor(Color.parseColor("#d8cebc"))
+                    // 1. Draw Background Parchment Color (matches the image better)
+                    canvas.drawColor(Color.parseColor("#e4d9c6"))
 
-                    // 2. Draw Logo
+                    // 2. Draw Logo - Scaled to cover or fit nicely
                     val bitmap = BitmapFactory.decodeResource(resources, com.a7x.countdown.R.drawable.deathbat)
                     if (bitmap != null) {
-                        val scale = canvas.width.toFloat() / bitmap.width.toFloat()
+                        // "Cover" logic
+                        val scale = Math.max(
+                            canvas.width.toFloat() / bitmap.width.toFloat(),
+                            canvas.height.toFloat() / bitmap.height.toFloat()
+                        )
+                        val dx = (canvas.width - bitmap.width * scale) / 2f
+                        val dy = (canvas.height - bitmap.height * scale) / 2f
+                        
                         val matrix = Matrix().apply {
                             postScale(scale, scale)
-                            postTranslate(0f, (canvas.height - bitmap.height * scale) / 2f + 200f) // Push it down
+                            postTranslate(dx, dy)
                         }
-                        canvas.drawBitmap(bitmap, matrix, null)
+                        canvas.drawBitmap(bitmap, matrix, Paint().apply { isFilterBitmap = true })
                     }
 
                     // 3. Calculate Days
                     val days = getDaysRemaining()
                     
-                    // 4. Draw Text
+                    // 4. Draw Text with better hierarchy
                     val x = canvas.width / 2f
-                    canvas.drawText("$days", x, canvas.height * 0.2f, paintText)
+                    
+                    // Countdown
+                    canvas.drawText("$days", x, canvas.height * 0.22f, paintText)
                     canvas.drawText("DIAS", x, canvas.height * 0.28f, paintSubText)
                     
-                    canvas.drawText("AVENGED SEVENFOLD", x, canvas.height * 0.45f, paintSubText)
-                    canvas.drawText("LIFE IS BUT A DREAM", x, canvas.height * 0.52f, paintText.apply { textSize = 80f })
+                    // Band Info (positioned to not overlap the skull too much)
+                    canvas.drawText("AVENGED SEVENFOLD", x, canvas.height * 0.42f, paintBand)
+                    
+                    val paintAlbum = Paint(paintText).apply { textSize = 90f; letterSpacing = 0.05f }
+                    canvas.drawText("LIFE IS BUT A DREAM", x, canvas.height * 0.48f, paintAlbum)
+                    
+                    canvas.drawText("México 2026", x, canvas.height * 0.53f, paintSubText.apply { textSize = 55f })
                 }
             } finally {
                 canvas?.let { holder.unlockCanvasAndPost(it) }
