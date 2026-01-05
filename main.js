@@ -1,16 +1,16 @@
 function updateCountdown() {
     // Target date: January 17, 2026
     const targetDate = new Date('January 17, 2026 00:00:00').getTime();
-    
+
     function refresh() {
         const now = new Date().getTime();
         const distance = targetDate - now;
 
         // Calculate days (rounding up to include the current day)
         const days = Math.ceil(distance / (1000 * 60 * 60 * 24));
-        
+
         const daysElement = document.getElementById('days-number');
-        
+
         if (distance < 0) {
             daysElement.innerText = "0";
             document.querySelector('.label').innerText = "ES HOY!";
@@ -28,8 +28,8 @@ function updateCountdown() {
     }
 
     refresh();
-    // Update every hour to be efficient
-    setInterval(refresh, 3600000);
+    // Actualizamos cada minuto para asegurar que cambie justo a medianoche
+    setInterval(refresh, 60000);
 }
 
 document.addEventListener('DOMContentLoaded', updateCountdown);
