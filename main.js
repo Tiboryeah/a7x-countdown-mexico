@@ -2,43 +2,58 @@ function updateCountdown() {
     // Target date: January 17, 2026
     const targetDate = new Date('January 17, 2026 00:00:00').getTime();
 
+    const units = {
+        days: document.getElementById('days'),
+        hours: document.getElementById('hours'),
+        minutes: document.getElementById('minutes'),
+        seconds: document.getElementById('seconds')
+    };
+
     function refresh() {
         const now = new Date().getTime();
         const distance = targetDate - now;
 
-        // Calculate days (rounding up to include the current day)
-        const days = Math.ceil(distance / (1000 * 60 * 60 * 24));
-
-        const daysElement = document.getElementById('days-number');
-
         if (distance < 0) {
-            daysElement.innerText = "0";
-            document.querySelector('.label').innerText = "ES HOY!";
+            Object.values(units).forEach(el => el.innerText = "00");
             return;
         }
 
-        // Animated number update if it changed
-        if (daysElement.innerText != days) {
-            daysElement.style.transform = 'scale(1.2)';
-            daysElement.innerText = days < 10 ? '0' + days : days;
-            setTimeout(() => {
-                daysElement.style.transform = 'scale(1)';
-            }, 200);
+        const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+        const values = {
+            days: d < 10 ? '0' + d : d,
+            hours: h < 10 ? '0' + h : h,
+            minutes: m < 10 ? '0' + m : m,
+            seconds: s < 10 ? '0' + s : s
+        };
+
+        for (const key in units) {
+            if (units[key].innerText !== String(values[key])) {
+                units[key].innerText = values[key];
+                // Subtle pop effect on change
+                units[key].style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    units[key].style.transform = 'scale(1)';
+                }, 100);
+            }
         }
     }
 
     refresh();
-    // Actualizamos cada minuto para asegurar que cambie justo a medianoche
-    setInterval(refresh, 60000);
+    setInterval(refresh, 1000);
 }
 
 document.addEventListener('DOMContentLoaded', updateCountdown);
 
-// Add a touch of interactivity - change jitter on touch
-document.addEventListener('touchstart', () => {
-    document.getElementById('days-number').style.animationDuration = '0.05s';
-});
+// Add a touch of interactivity - change jitter on touch for all units
+const setJitter = (duration) => {
+    document.querySelectorAll('.countdown-header h1').forEach(h1 => {
+        h1.style.animationDuration = duration;
+    });
+};
 
-document.addEventListener('touchend', () => {
-    document.getElementById('days-number').style.animationDuration = '0.2s';
-});
+document.addEventListener('touchstart', () => setJitter('0.05s'));
+document.addEventListener('touchend', () => setJitter('0.15s'));
