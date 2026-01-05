@@ -16,6 +16,11 @@ class A7XWallpaperService : WallpaperService() {
         private val drawRunnable = Runnable { draw() }
         private var visible = false
 
+        private val targetTime = Calendar.getInstance().apply {
+            set(2026, Calendar.JANUARY, 17, 21, 0, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
         private val paintText = Paint().apply {
             color = Color.parseColor("#1a1a1a")
             textSize = 300f
@@ -56,6 +61,10 @@ class A7XWallpaperService : WallpaperService() {
         private fun draw() {
             val holder = surfaceHolder
             var canvas: Canvas? = null
+            
+            val now = System.currentTimeMillis()
+            val diff = targetTime - now
+
             try {
                 canvas = holder.lockCanvas()
                 if (canvas != null) {
@@ -65,12 +74,15 @@ class A7XWallpaperService : WallpaperService() {
                     // 2. Draw Logo
                     val bitmap = BitmapFactory.decodeResource(resources, com.a7x.countdown.R.drawable.deathbat)
                     if (bitmap != null) {
+                        val xOffset = if (diff <= 0) (Math.random() * 20 - 10).toFloat() else 0f
+                        val yOffset = if (diff <= 0) (Math.random() * 20 - 10).toFloat() else 0f
+
                         val scale = Math.max(
                             canvas.width.toFloat() / bitmap.width.toFloat(),
                             canvas.height.toFloat() / bitmap.height.toFloat()
                         )
-                        val dx = (canvas.width - bitmap.width * scale) / 2f
-                        val dy = (canvas.height - bitmap.height * scale) / 2f
+                        val dx = ((canvas.width - bitmap.width * scale) / 2f) + xOffset
+                        val dy = ((canvas.height - bitmap.height * scale) / 2f) + yOffset
                         
                         val matrix = Matrix().apply {
                             postScale(scale, scale)
@@ -79,14 +91,7 @@ class A7XWallpaperService : WallpaperService() {
                         canvas.drawBitmap(bitmap, matrix, Paint().apply { isFilterBitmap = true })
                     }
 
-                    // 3. Calculate Time Remaining
-                    val target = Calendar.getInstance().apply {
-                        set(2026, Calendar.JANUARY, 17, 21, 0, 0)
-                        set(Calendar.MILLISECOND, 0)
-                    }.timeInMillis
-                    val now = System.currentTimeMillis()
-                    val diff = target - now
-
+                    // 3. Countdown Display
                     val x = canvas.width / 2f
                     
                     if (diff > 0) {
@@ -95,35 +100,16 @@ class A7XWallpaperService : WallpaperService() {
                         val minutes = TimeUnit.MILLISECONDS.toMinutes(diff) % 60
                         val seconds = TimeUnit.MILLISECONDS.toSeconds(diff) % 60
 
-                        // 4. Draw Countdown Grid-like (Days, Hrs, Min, Seg)
                         val timeStr = String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds)
                         val labelStr = "DIAS : HRS : MIN : SEG"
                         
                         paintText.textSize = 150f
+                        paintText.color = Color.parseColor("#1a1a1a")
                         canvas.drawText(timeStr, x, canvas.height * 0.22f, paintText)
                         
                         paintSubText.textSize = 40f
                         canvas.drawText(labelStr, x, canvas.height * 0.26f, paintSubText)
                     } else {
-                        // AGGRESSIVE VIBRATION LOGIC
-                        val randomX = (Math.random() * 20 - 10).toFloat()
-                        val randomY = (Math.random() * 20 - 10).toFloat()
-                        
-                        // Redraw logo with offset
-                        val bitmap2 = BitmapFactory.decodeResource(resources, com.a7x.countdown.R.drawable.deathbat)
-                        if (bitmap2 != null) {
-                            val scale = Math.max(
-                                canvas.width.toFloat() / bitmap2.width.toFloat(),
-                                canvas.height.toFloat() / bitmap2.height.toFloat()
-                            )
-                            val matrix = Matrix().apply {
-                                postScale(scale, scale)
-                                postTranslate(((canvas.width - bitmap2.width * scale) / 2f) + randomX, 
-                                              ((canvas.height - bitmap2.height * scale) / 2f) + randomY)
-                            }
-                            canvas.drawBitmap(bitmap2, matrix, Paint().apply { isFilterBitmap = true })
-                        }
-
                         paintText.textSize = 180f
                         paintText.color = Color.parseColor("#4a0000") // Red accent
                         canvas.drawText("¡YA ES EL SHOW!", x, canvas.height * 0.22f, paintText)
@@ -146,8 +132,7 @@ class A7XWallpaperService : WallpaperService() {
             }
             
             if (visible) {
-                // When in showtime, refresh faster for vibration
-                val delay = if (System.currentTimeMillis() >= target) 50L else 1000L
+                val delay = if (diff <= 0) 50L else 1000L
                 handler.postDelayed(drawRunnable, delay)
             }
         }
