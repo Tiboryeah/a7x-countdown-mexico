@@ -13,8 +13,10 @@ function updateCountdown() {
         const now = new Date().getTime();
         const distance = targetDate - now;
 
-        if (distance < 0) {
-            Object.values(units).forEach(el => el.innerText = "00");
+        if (distance <= 0) {
+            document.querySelector('.countdown-grid').style.display = 'none';
+            document.getElementById('show-time-msg').style.display = 'block';
+            document.querySelector('.parchment').classList.add('vibrate');
             return;
         }
 

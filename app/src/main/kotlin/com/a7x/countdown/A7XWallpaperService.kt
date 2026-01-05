@@ -99,20 +99,44 @@ class A7XWallpaperService : WallpaperService() {
                         val timeStr = String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds)
                         val labelStr = "DIAS : HRS : MIN : SEG"
                         
-                        paintText.textSize = 150f // Smaller to fit on one line
+                        paintText.textSize = 150f
                         canvas.drawText(timeStr, x, canvas.height * 0.22f, paintText)
                         
                         paintSubText.textSize = 40f
                         canvas.drawText(labelStr, x, canvas.height * 0.26f, paintSubText)
                     } else {
-                        canvas.drawText("00:00:00:00", x, canvas.height * 0.22f, paintText)
-                        canvas.drawText("¡YA ES EL SHOW!", x, canvas.height * 0.26f, paintSubText)
+                        // AGGRESSIVE VIBRATION LOGIC
+                        val randomX = (Math.random() * 20 - 10).toFloat()
+                        val randomY = (Math.random() * 20 - 10).toFloat()
+                        
+                        // Redraw logo with offset
+                        val bitmap2 = BitmapFactory.decodeResource(resources, com.a7x.countdown.R.drawable.deathbat)
+                        if (bitmap2 != null) {
+                            val scale = Math.max(
+                                canvas.width.toFloat() / bitmap2.width.toFloat(),
+                                canvas.height.toFloat() / bitmap2.height.toFloat()
+                            )
+                            val matrix = Matrix().apply {
+                                postScale(scale, scale)
+                                postTranslate(((canvas.width - bitmap2.width * scale) / 2f) + randomX, 
+                                              ((canvas.height - bitmap2.height * scale) / 2f) + randomY)
+                            }
+                            canvas.drawBitmap(bitmap2, matrix, Paint().apply { isFilterBitmap = true })
+                        }
+
+                        paintText.textSize = 180f
+                        paintText.color = Color.parseColor("#4a0000") // Red accent
+                        canvas.drawText("¡YA ES EL SHOW!", x, canvas.height * 0.22f, paintText)
                     }
                     
                     // Band Info
                     canvas.drawText("AVENGED SEVENFOLD", x, canvas.height * 0.42f, paintBand)
                     
-                    val paintAlbum = Paint(paintText).apply { textSize = 80f; letterSpacing = 0.05f }
+                    val paintAlbum = Paint(paintText).apply { 
+                        textSize = 80f; 
+                        letterSpacing = 0.05f; 
+                        color = Color.parseColor("#1a1a1a") 
+                    }
                     canvas.drawText("LIFE IS BUT A DREAM", x, canvas.height * 0.48f, paintAlbum)
                     
                     canvas.drawText("México 2026", x, canvas.height * 0.53f, paintSubText.apply { textSize = 55f })
@@ -122,7 +146,9 @@ class A7XWallpaperService : WallpaperService() {
             }
             
             if (visible) {
-                handler.postDelayed(drawRunnable, 1000) // Update every second
+                // When in showtime, refresh faster for vibration
+                val delay = if (System.currentTimeMillis() >= target) 50L else 1000L
+                handler.postDelayed(drawRunnable, delay)
             }
         }
 
