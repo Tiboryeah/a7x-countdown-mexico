@@ -1,3 +1,5 @@
+let countdownInterval = null;
+
 function updateCountdown() {
     // Target date: January 17, 2026 at 9:00 PM (21:00)
     const targetDate = new Date('January 17, 2026 21:00:00').getTime();
@@ -17,6 +19,7 @@ function updateCountdown() {
             document.querySelector('.countdown-grid').style.display = 'none';
             document.getElementById('show-time-msg').style.display = 'block';
             document.querySelector('.parchment').classList.add('vibrate');
+            if (countdownInterval) clearInterval(countdownInterval);
             return;
         }
 
@@ -35,7 +38,6 @@ function updateCountdown() {
         for (const key in units) {
             if (units[key].innerText !== String(values[key])) {
                 units[key].innerText = values[key];
-                // Subtle pop effect on change
                 units[key].style.transform = 'scale(1.1)';
                 setTimeout(() => {
                     units[key].style.transform = 'scale(1)';
@@ -44,11 +46,18 @@ function updateCountdown() {
         }
     }
 
+    if (countdownInterval) clearInterval(countdownInterval);
     refresh();
-    setInterval(refresh, 1000);
+    countdownInterval = setInterval(refresh, 1000);
 }
 
 document.addEventListener('DOMContentLoaded', updateCountdown);
+
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        updateCountdown();
+    }
+});
 
 // Add a touch of interactivity - change jitter on touch for all units
 const setJitter = (duration) => {

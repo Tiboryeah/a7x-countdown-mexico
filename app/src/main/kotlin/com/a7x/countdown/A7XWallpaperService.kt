@@ -49,7 +49,16 @@ class A7XWallpaperService : WallpaperService() {
 
         override fun onVisibilityChanged(visible: Boolean) {
             this.visible = visible
-            if (visible) draw() else handler.removeCallbacks(drawRunnable)
+            handler.removeCallbacks(drawRunnable)
+            if (visible) {
+                draw()
+            }
+        }
+
+        override fun onSurfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
+            super.onSurfaceChanged(holder, format, width, height)
+            handler.removeCallbacks(drawRunnable)
+            draw()
         }
 
         override fun onSurfaceDestroyed(holder: SurfaceHolder) {
@@ -133,6 +142,7 @@ class A7XWallpaperService : WallpaperService() {
             
             if (visible) {
                 val delay = if (diff <= 0) 50L else 1000L
+                handler.removeCallbacks(drawRunnable)
                 handler.postDelayed(drawRunnable, delay)
             }
         }
