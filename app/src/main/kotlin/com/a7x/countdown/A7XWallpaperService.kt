@@ -59,13 +59,12 @@ class A7XWallpaperService : WallpaperService() {
             try {
                 canvas = holder.lockCanvas()
                 if (canvas != null) {
-                    // 1. Draw Background Parchment Color (matches the image better)
+                    // 1. Draw Background Parchment Color
                     canvas.drawColor(Color.parseColor("#e4d9c6"))
 
-                    // 2. Draw Logo - Scaled to cover or fit nicely
+                    // 2. Draw Logo
                     val bitmap = BitmapFactory.decodeResource(resources, com.a7x.countdown.R.drawable.deathbat)
                     if (bitmap != null) {
-                        // "Cover" logic
                         val scale = Math.max(
                             canvas.width.toFloat() / bitmap.width.toFloat(),
                             canvas.height.toFloat() / bitmap.height.toFloat()
@@ -80,20 +79,40 @@ class A7XWallpaperService : WallpaperService() {
                         canvas.drawBitmap(bitmap, matrix, Paint().apply { isFilterBitmap = true })
                     }
 
-                    // 3. Calculate Days
-                    val days = getDaysRemaining()
-                    
-                    // 4. Draw Text with better hierarchy
+                    // 3. Calculate Time Remaining
+                    val target = Calendar.getInstance().apply {
+                        set(2026, Calendar.JANUARY, 17, 0, 0, 0)
+                        set(Calendar.MILLISECOND, 0)
+                    }.timeInMillis
+                    val now = System.currentTimeMillis()
+                    val diff = target - now
+
                     val x = canvas.width / 2f
                     
-                    // Countdown
-                    canvas.drawText("$days", x, canvas.height * 0.22f, paintText)
-                    canvas.drawText("DIAS", x, canvas.height * 0.28f, paintSubText)
+                    if (diff > 0) {
+                        val days = TimeUnit.MILLISECONDS.toDays(diff)
+                        val hours = TimeUnit.MILLISECONDS.toHours(diff) % 24
+                        val minutes = TimeUnit.MILLISECONDS.toMinutes(diff) % 60
+                        val seconds = TimeUnit.MILLISECONDS.toSeconds(diff) % 60
+
+                        // 4. Draw Countdown Grid-like (Days, Hrs, Min, Seg)
+                        val timeStr = String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds)
+                        val labelStr = "DIAS : HRS : MIN : SEG"
+                        
+                        paintText.textSize = 150f // Smaller to fit on one line
+                        canvas.drawText(timeStr, x, canvas.height * 0.22f, paintText)
+                        
+                        paintSubText.textSize = 40f
+                        canvas.drawText(labelStr, x, canvas.height * 0.26f, paintSubText)
+                    } else {
+                        canvas.drawText("00:00:00:00", x, canvas.height * 0.22f, paintText)
+                        canvas.drawText("¡YA ES EL SHOW!", x, canvas.height * 0.26f, paintSubText)
+                    }
                     
-                    // Band Info (positioned to not overlap the skull too much)
+                    // Band Info
                     canvas.drawText("AVENGED SEVENFOLD", x, canvas.height * 0.42f, paintBand)
                     
-                    val paintAlbum = Paint(paintText).apply { textSize = 90f; letterSpacing = 0.05f }
+                    val paintAlbum = Paint(paintText).apply { textSize = 80f; letterSpacing = 0.05f }
                     canvas.drawText("LIFE IS BUT A DREAM", x, canvas.height * 0.48f, paintAlbum)
                     
                     canvas.drawText("México 2026", x, canvas.height * 0.53f, paintSubText.apply { textSize = 55f })
@@ -103,16 +122,9 @@ class A7XWallpaperService : WallpaperService() {
             }
             
             if (visible) {
-                handler.postDelayed(drawRunnable, 60000) // Update every minute
+                handler.postDelayed(drawRunnable, 1000) // Update every second
             }
         }
 
-        private fun getDaysRemaining(): Long {
-            val target = Calendar.getInstance().apply {
-                set(2026, Calendar.JANUARY, 17, 0, 0, 0)
-            }.timeInMillis
-            val diff = target - System.currentTimeMillis()
-            return if (diff > 0) TimeUnit.MILLISECONDS.toDays(diff) + 1 else 0
-        }
     }
 }
