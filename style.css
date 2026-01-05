@@ -23,96 +23,97 @@ html {
     width: 100%;
     height: 100%;
     background-color: #e8e1d4;
-    /* Exact match to the original image's background */
+    /* Exact cream color from the image */
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 10vh;
-    /* More top padding for the countdown */
-    padding-bottom: 2vh;
+    padding-top: 6vh;
+    padding-bottom: 0;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
+    /* Allow scrolling if screen is too short */
+    overflow-x: hidden;
 }
 
 .overlay {
     display: none;
-    /* Keep it clean */
 }
 
 .content {
     text-align: center;
-    max-width: 400px;
+    max-width: 450px;
     width: 90%;
     z-index: 10;
     display: flex;
     flex-direction: column;
-    height: 90vh;
-    /* Fixed height for better layout control */
+    align-items: center;
+    min-height: 94vh;
 }
 
-.countdown-section h1 {
-    font-family: 'UnifrakturMaguntia', serif;
-    font-size: 8.5rem;
-    line-height: 0.8;
-    color: var(--ink-color);
-    margin-bottom: 0;
-    letter-spacing: -2px;
-    animation: jitter 0.2s infinite alternate;
-}
-
-.countdown-section .label {
-    font-size: 3rem;
-    font-family: 'Special Elite', cursive;
-    text-transform: capitalize;
-    margin-top: -5px;
-    color: var(--ink-color);
-}
-
-.info-section {
-    margin-top: 3vh;
+.countdown-section {
     margin-bottom: 2vh;
 }
 
+.countdown-section h1 {
+    font-family: 'Special Elite', cursive;
+    font-size: 5rem;
+    line-height: 1;
+    color: #1a1a1a;
+    margin-bottom: 0px;
+}
+
+.countdown-section .label {
+    font-size: 1.8rem;
+    font-family: 'Special Elite', cursive;
+    text-transform: capitalize;
+    margin-top: -5px;
+    color: #1a1a1a;
+    letter-spacing: 2px;
+}
+
+.info-section {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
 .band-name {
-    font-family: 'IM Fell English SC', serif;
-    font-size: 1.4rem;
+    font-family: 'Special Elite', cursive;
+    font-size: 1.2rem;
     letter-spacing: 3px;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-weight: normal;
 }
 
 .album-title {
     font-family: 'Special Elite', cursive;
-    font-size: 1.8rem;
+    font-size: 2.22rem;
     font-weight: bold;
     letter-spacing: 1px;
-    line-height: 1.2;
+    line-height: 1.1;
+    text-transform: uppercase;
 }
 
 .location {
     font-family: 'Special Elite', cursive;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     margin-top: 10px;
-    opacity: 0.8;
 }
 
 .art-section {
     margin-top: auto;
-    /* Pushes the art to the very bottom */
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    width: 100%;
 }
 
 .deathbat-main {
-    width: 110%;
-    /* Slightly larger for impact */
-    max-width: 500px;
+    width: 100%;
+    max-width: 600px;
     height: auto;
     object-fit: contain;
     mix-blend-mode: multiply;
-    margin-bottom: -10px;
-    /* Bleeds a bit to the edge */
+    margin-bottom: -5px;
 }
 
 @keyframes jitter {
@@ -128,14 +129,18 @@ html {
 /* Specific adjustments for tall mobile screens */
 @media (max-width: 500px) {
     .countdown-section h1 {
-        font-size: 7.5rem;
+        font-size: 4.5rem;
     }
 
     .countdown-section .label {
-        font-size: 2.8rem;
+        font-size: 1.5rem;
     }
 
     .album-title {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
+    }
+
+    .location {
+        font-size: 1.3rem;
     }
 }
