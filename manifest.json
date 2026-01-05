@@ -1,0 +1,15 @@
+{
+  "name": "A7X Countdown",
+  "short_name": "A7X",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#d9d2c5",
+  "theme_color": "#d9d2c5",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/ios-filled/512/skull.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
