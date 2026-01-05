@@ -24,9 +24,10 @@ html {
     height: 100vh;
     background-color: #d8cebc;
     background-image: url('deathbat.png');
-    background-size: cover;
-    background-position: center bottom;
-    /* Position the skull at the bottom */
+    background-size: 100% auto;
+    /* Fixed width to prevent the skull from getting too big */
+    background-position: center 95%;
+    /* Push the skull to the very bottom */
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
@@ -45,7 +46,8 @@ html {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.1) 100%);
+    background: radial-gradient(circle, transparent 10%, rgba(216, 206, 188, 0.4) 100%);
+    /* Subtle lightening to help text */
     pointer-events: none;
     z-index: 1;
 }
@@ -53,58 +55,65 @@ html {
 .content {
     text-align: center;
     max-width: 450px;
-    width: 100%;
+    width: 90%;
     z-index: 10;
     display: flex;
     flex-direction: column;
     align-items: center;
+    filter: drop-shadow(0 0 10px rgba(216, 206, 188, 0.8));
+    /* Glow around text to separate from texture */
 }
 
 .countdown-header h1 {
     font-family: 'UnifrakturMaguntia', serif;
-    font-size: 8rem;
+    font-size: 9rem;
+    /* Bigger for impact */
     line-height: 0.7;
-    color: var(--ink-color);
+    color: #000;
     margin-bottom: 0;
     letter-spacing: -5px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.1));
+    text-shadow: 1px 1px 0px #fff, -1px -1px 0px #fff;
+    /* Micro-outline for readability */
     animation: jitter 0.15s infinite alternate;
 }
 
 .countdown-header .label {
-    font-size: 2.8rem;
+    font-size: 3rem;
     text-transform: capitalize;
-    margin-top: -5px;
+    margin-top: 0;
     font-family: 'IM Fell English SC', serif;
-    color: var(--ink-color);
+    color: #000;
+    font-weight: bold;
 }
 
 .info-section {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
 }
 
 .band-name {
     font-family: 'Special Elite', cursive;
-    font-size: 1.1rem;
-    letter-spacing: 3px;
-    margin-bottom: 0.6rem;
-    color: var(--ink-color);
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+    margin-bottom: 0.8rem;
+    color: #000;
+    font-weight: bold;
 }
 
 .album-title {
     font-family: 'Special Elite', cursive;
-    font-size: 2.1rem;
+    font-size: 2.3rem;
     letter-spacing: 1px;
-    margin-bottom: 0.3rem;
-    font-weight: 700;
-    color: var(--ink-color);
+    margin-bottom: 0.5rem;
+    font-weight: 900;
+    color: #000;
     line-height: 1;
 }
 
 .location {
     font-family: 'Special Elite', cursive;
-    font-size: 1.5rem;
-    color: var(--ink-color);
+    font-size: 1.8rem;
+    color: #1a1a1a;
+    font-weight: bold;
 }
 
 .deathbat-canvas {
