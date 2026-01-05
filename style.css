@@ -27,8 +27,9 @@ html {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 5vh;
-    padding-bottom: 5vh;
+    padding-top: 10vh;
+    /* More top padding for the countdown */
+    padding-bottom: 2vh;
     position: relative;
     overflow: hidden;
 }
@@ -45,14 +46,14 @@ html {
     z-index: 10;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    height: 100%;
+    height: 90vh;
+    /* Fixed height for better layout control */
 }
 
 .countdown-section h1 {
     font-family: 'UnifrakturMaguntia', serif;
     font-size: 8.5rem;
-    line-height: 0.85;
+    line-height: 0.8;
     color: var(--ink-color);
     margin-bottom: 0;
     letter-spacing: -2px;
@@ -60,73 +61,74 @@ html {
 }
 
 .countdown-section .label {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-family: 'Special Elite', cursive;
     text-transform: capitalize;
-    margin-top: -10px;
+    margin-top: -5px;
     color: var(--ink-color);
-    letter-spacing: 2px;
 }
 
 .info-section {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+    margin-top: 3vh;
+    margin-bottom: 2vh;
 }
 
 .band-name {
     font-family: 'IM Fell English SC', serif;
     font-size: 1.4rem;
-    letter-spacing: 4px;
-    margin-bottom: 0.5rem;
+    letter-spacing: 3px;
+    margin-bottom: 5px;
 }
 
 .album-title {
     font-family: 'Special Elite', cursive;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: bold;
     letter-spacing: 1px;
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
+    line-height: 1.2;
 }
 
 .location {
     font-family: 'Special Elite', cursive;
-    font-size: 1.6rem;
-    opacity: 0.9;
+    font-size: 1.4rem;
+    margin-top: 10px;
+    opacity: 0.8;
 }
 
 .art-section {
     margin-top: auto;
-    margin-bottom: 2vh;
+    /* Pushes the art to the very bottom */
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    flex-grow: 1;
+    width: 100%;
 }
 
 .deathbat-main {
-    width: 100%;
-    max-width: 450px;
+    width: 110%;
+    /* Slightly larger for impact */
+    max-width: 500px;
     height: auto;
     object-fit: contain;
     mix-blend-mode: multiply;
-    /* Helps blend with the background color seamlessly */
+    margin-bottom: -10px;
+    /* Bleeds a bit to the edge */
 }
 
 @keyframes jitter {
     0% {
-        transform: translateX(-0.5px);
+        transform: translate(-0.5px, 0);
     }
 
     100% {
-        transform: translateX(0.5px);
+        transform: translate(0.5px, 0.5px);
     }
 }
 
 /* Specific adjustments for tall mobile screens */
 @media (max-width: 500px) {
     .countdown-section h1 {
-        font-size: 7rem;
+        font-size: 7.5rem;
     }
 
     .countdown-section .label {
@@ -134,10 +136,6 @@ html {
     }
 
     .album-title {
-        font-size: 1.6rem;
-    }
-
-    .location {
-        font-size: 1.3rem;
+        font-size: 1.5rem;
     }
 }
