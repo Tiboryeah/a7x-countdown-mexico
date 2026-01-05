@@ -52,8 +52,16 @@ class A7XWallpaperService : WallpaperService() {
                     // 1. Draw Background Parchment Color
                     canvas.drawColor(Color.parseColor("#d8cebc"))
 
-                    // 2. Draw Logo (Placeholder for now, logic to load bitmap)
-                    // ... code to draw deathbat.png ...
+                    // 2. Draw Logo
+                    val bitmap = BitmapFactory.decodeResource(resources, com.a7x.countdown.R.drawable.deathbat)
+                    if (bitmap != null) {
+                        val scale = canvas.width.toFloat() / bitmap.width.toFloat()
+                        val matrix = Matrix().apply {
+                            postScale(scale, scale)
+                            postTranslate(0f, (canvas.height - bitmap.height * scale) / 2f + 200f) // Push it down
+                        }
+                        canvas.drawBitmap(bitmap, matrix, null)
+                    }
 
                     // 3. Calculate Days
                     val days = getDaysRemaining()

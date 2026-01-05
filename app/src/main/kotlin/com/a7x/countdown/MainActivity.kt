@@ -1,5 +1,6 @@
 package com.a7x.countdown
 
+import android.app.Activity
 import android.app.WallpaperManager
 import android.content.ComponentName
 import android.content.Intent
@@ -7,9 +8,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.view.Gravity
-import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
