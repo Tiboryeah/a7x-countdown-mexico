@@ -9,6 +9,15 @@
         android:label="A7X 2026 Countdown"
         android:theme="@android:style/Theme.Black.NoTitleBar">
 
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".A7XWallpaperService"
             android:label="A7X Countdown Wallpaper"
