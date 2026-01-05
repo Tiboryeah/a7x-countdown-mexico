@@ -22,17 +22,15 @@ html {
 .parchment {
     width: 100vw;
     height: 100vh;
-    background-color: #d8cebc;
     background-image: url('deathbat.png');
-    background-size: 100% auto;
-    /* Fixed width to prevent the skull from getting too big */
-    background-position: center 95%;
-    /* Push the skull to the very bottom */
+    background-size: cover;
+    /* This will ensure the parchment texture covers the whole screen */
+    background-position: center center;
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 5vh;
+    padding-top: 8vh;
     overflow: hidden;
     position: fixed;
     /* Keep it fixed to the whole screen */
