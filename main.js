@@ -1,6 +1,6 @@
 function updateCountdown() {
-    // Target date: January 17, 2026
-    const targetDate = new Date('January 17, 2026 00:00:00').getTime();
+    // Target date: January 17, 2026 at 9:00 PM (21:00)
+    const targetDate = new Date('January 17, 2026 21:00:00').getTime();
 
     const units = {
         days: document.getElementById('days'),

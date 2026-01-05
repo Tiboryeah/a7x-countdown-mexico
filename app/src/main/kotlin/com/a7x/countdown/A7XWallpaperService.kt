@@ -81,7 +81,7 @@ class A7XWallpaperService : WallpaperService() {
 
                     // 3. Calculate Time Remaining
                     val target = Calendar.getInstance().apply {
-                        set(2026, Calendar.JANUARY, 17, 0, 0, 0)
+                        set(2026, Calendar.JANUARY, 17, 21, 0, 0)
                         set(Calendar.MILLISECOND, 0)
                     }.timeInMillis
                     val now = System.currentTimeMillis()
