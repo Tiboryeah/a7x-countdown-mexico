@@ -21,17 +21,15 @@ body, html {
 .parchment {
     width: 100%;
     height: 100%;
-    background-color: var(--parchment-bg);
-    background-image: 
-        radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.1) 100%),
-        url('https://www.transparenttextures.com/patterns/aged-paper.png'); /* A subtle paper texture */
+    background-color: #e8dfd1; /* Matching the image's base color */
+    background-image: url('deathbat.png');
+    background-size: cover;
+    background-position: center;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 2rem;
+    align-items: flex-start;
+    padding-top: 10vh;
     position: relative;
-    border: 15px solid transparent;
-    border-image: radial-gradient(#333, transparent) 1;
 }
 
 .overlay {
@@ -40,105 +38,82 @@ body, html {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png'); /* To simulate ink grain */
-    opacity: 0.05;
+    background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.15) 100%);
     pointer-events: none;
 }
 
 .content {
     text-align: center;
-    max-width: 400px;
+    max-width: 450px;
     width: 100%;
     z-index: 10;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 80vh;
+    align-items: center;
 }
 
-.countdown-container h1 {
+.countdown-header h1 {
     font-family: 'UnifrakturMaguntia', serif;
     font-size: 8rem;
-    line-height: 1;
+    line-height: 0.8;
     color: var(--ink-color);
     margin-bottom: 0;
-    text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
-    animation: jitter 0.2s infinite alternate;
+    letter-spacing: -5px;
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
+    animation: jitter 0.15s infinite alternate;
 }
 
-.countdown-container .label {
-    font-size: 2.5rem;
-    text-transform: uppercase;
-    margin-top: -10px;
-    letter-spacing: 5px;
+.countdown-header .label {
+    font-size: 3rem;
+    text-transform: capitalize;
+    margin-top: -5px;
+    font-family: 'IM Fell English SC', serif;
     color: var(--ink-color);
 }
 
-.band-info {
-    margin: 2rem 0;
+.info-section {
+    margin-top: 2rem;
 }
 
 .band-name {
-    font-size: 1.2rem;
-    letter-spacing: 4px;
-    margin-bottom: 0.5rem;
-    opacity: 0.8;
+    font-family: 'Special Elite', cursive;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    margin-bottom: 0.8rem;
+    color: var(--ink-color);
+    opacity: 0.9;
 }
 
 .album-title {
     font-family: 'Special Elite', cursive;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
+    font-size: 2.2rem;
+    letter-spacing: 1px;
     margin-bottom: 0.5rem;
-    font-weight: bold;
+    font-weight: 700;
+    color: var(--ink-color);
+    line-height: 1.1;
 }
 
 .location {
-    font-size: 1.5rem;
-    font-style: italic;
-    opacity: 0.9;
+    font-family: 'Special Elite', cursive;
+    font-size: 1.6rem;
+    margin-top: 0.5rem;
+    color: var(--ink-color);
 }
 
-.deathbat-container {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
-}
-
-.deathbat-svg {
-    width: 250px;
-    height: auto;
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
-}
-
-svg path {
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: draw 3s forwards ease-in-out;
-}
-
-.footer-decor {
-    margin-top: auto;
-    height: 100px;
-    background-image: linear-gradient(to bottom, transparent, var(--ink-color));
-    mask-image: url('https://www.transparenttextures.com/patterns/brush-stroke-diagonal.png');
-    opacity: 0.3;
+.deathbat-canvas {
+    display: none; /* Hide the img tag since we use it as background for better layout */
 }
 
 /* Animations */
 @keyframes jitter {
-    0% { transform: translate(0,0); }
-    100% { transform: translate(1px, 1px); }
-}
-
-@keyframes draw {
-    to {
-        stroke-dashoffset: 0;
-    }
+    0% { transform: translate(-0.5px, -0.5px) rotate(-0.5deg); }
+    100% { transform: translate(0.5px, 0.5px) rotate(0.5deg); }
 }
 
 /* Mobile Adjustments */
-@media (max-height: 700px) {
-    .countdown-container h1 { font-size: 6rem; }
-    .album-title { font-size: 1.4rem; }
+@media (max-height: 800px) {
+    .countdown-header h1 { font-size: 6.5rem; }
+    .album-title { font-size: 1.8rem; }
+    .location { font-size: 1.3rem; }
 }
